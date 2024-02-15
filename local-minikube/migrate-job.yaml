@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-migrate
+  labels:
+    app: django
+  annotations:
+    configmap.reloader.com/reload: "django-config"
+spec:
+  template:
+    spec:
+      containers:
+      - name: django-migrate
+        image: django_app:v88
+        imagePullPolicy: IfNotPresent
+        command: ["python", "manage.py", "migrate", "--noinput"]
+        envFrom:
+          - configMapRef:
+              name: django-config
+      restartPolicy: Never

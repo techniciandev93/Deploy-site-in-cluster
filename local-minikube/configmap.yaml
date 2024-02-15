@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-config
+data:
+  DEBUG: "True"
+  ALLOWED_HOSTS: "127.0.0.1,192.168.0.87,star-burger.test"
