@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: edu-hopeful-ritchie
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  tls:
+  - hosts:
+    - edu-hopeful-ritchie.sirius-k8s.dvmn.org   # ваше доменное имя
+    secretName: example-com-tls
+  rules:
+  - host: edu-hopeful-ritchie.sirius-k8s.dvmn.org   # ваше доменное имя
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 80
