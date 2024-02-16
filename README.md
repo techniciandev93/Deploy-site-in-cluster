@@ -141,8 +141,8 @@
 
 Примените манифесты Kubernetes:
    ```bash
-   kubectl apply -f Deployment.yaml
-   kubectl apply -f Service.yaml
-   kubectl apply -f Ingress.yaml
+   kubectl apply -f dev-test-nginx/Deployment.yaml
+   kubectl apply -f dev-test-nginx/Service.yaml
+   kubectl apply -f dev-test-nginx/Ingress.yaml
    ```
 Проверьте перейдя по домену который вам был выдан.
