@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-pod
+spec:
+  containers:
+  - name: ubuntu-container
+    image: ubuntu
+    command: ["/bin/sh", "-c"]
+    args:
+    - apt-get update && apt-get install -y postgresql-client; sleep infinity;
+    volumeMounts:
+    - name: ssl-certs
+      mountPath: /root/.postgresql
+      readOnly: true
+  volumes:
+  - name: ssl-certs
+    secret:
+      secretName: postgres-ssl-cert
+      defaultMode: 0600

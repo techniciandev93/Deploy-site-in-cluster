@@ -1,4 +1,4 @@
-# Django site in Minikube and in в Yandex Cloud
+# Django site in Minikube and in Yandex Cloud
 
 Докеризированный сайт на Django для экспериментов с Kubernetes.
 
@@ -146,3 +146,20 @@
    kubectl apply -f dev-test-nginx/Ingress.yaml
    ```
 Проверьте перейдя по домену который вам был выдан.
+
+### Загрузка DockerImage на DockerHub
+Перейдите в каталог проекта local-docker-app и соберите докер-образ:
+
+```
+docker build -t <image-name>:<tag> .
+```
+Загрузите образ на DockerHub.
+
+Затем переименуйте образ:
+```
+docker tag <image-name>:<tag> YOUR-USERNAME/<image-name>:<tag>
+```
+И загрузите:
+```
+docker push YOUR-USERNAME/<image-name>:<tag>
+```
