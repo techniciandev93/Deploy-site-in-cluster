@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+  namespace: edu-hopeful-ritchie
+spec:
+  selector:
+    app: django
+  ports:
+    - protocol: TCP
+      port: 80
+      nodePort: 30341
+      targetPort: 80
+  type: NodePort

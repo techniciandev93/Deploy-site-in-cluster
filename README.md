@@ -153,13 +153,53 @@
 ```
 docker build -t <image-name>:<tag> .
 ```
-Загрузите образ на DockerHub.
-
-Затем переименуйте образ:
+Переименуйте образ:
 ```
 docker tag <image-name>:<tag> YOUR-USERNAME/<image-name>:<tag>
 ```
-И загрузите:
+Загрузите образ на DockerHub.
 ```
 docker push YOUR-USERNAME/<image-name>:<tag>
 ```
+
+### Как подготовить dev окружение
+Все необходимые манифесты для деплоя находятся в директории deploy/yc-sirius/edu-hopeful-ritchie.
+
+В файле configmap.yaml подставьте свои значения переменных окружения.
+```
+kubectl -n <namespace> apply -f configmap.yaml
+```
+Для подключения к базе данных скачайте [SSL-сертификат](https://cloud.yandex.ru/ru/docs/managed-postgresql/operations/connect#get-ssl-cert) для postgresql командой:
+```
+mkdir -p ~/.postgresql && \
+wget "https://storage.yandexcloud.net/cloud-certs/CA.pem" \
+     --output-document ~/.postgresql/root.crt && \
+chmod 0600 ~/.postgresql/root.crt
+```
+Сертификат будет сохранен в файле ~/.postgresql/root.crt
+
+Создайте Secret:
+```
+kubectl create secret generic postgres-ssl-cert -n <namespace> --from-file=/path_to/root.crt
+```
+
+### Запуск приложения
+Разверните в кластере джанго-приложение:
+```
+kubectl -n <namespace> apply -f deployment.yaml -f configmap.yaml
+```
+В файле django-service.yaml змените значение nodePort: 30341 на свое согласно настройкам ALB-роутера. Запустите сервис:
+```
+kubectl -n <namespace> apply -f django-service.yaml
+```
+Примените миграции:
+
+```
+kubectl -n <namespace> apply -f migrate-job.yaml
+```
+Запустите очисту сессий:
+```
+kubectl -n <namespace> apply -f django-clearsessions.yaml
+```
+Сайт доступен по ссылке https://edu-hopeful-ritchie.sirius-k8s.dvmn.org/
+
