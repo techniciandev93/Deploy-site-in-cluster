@@ -146,3 +146,7 @@
    kubectl apply -f dev-test-nginx/Ingress.yaml
    ```
 Проверьте перейдя по домену который вам был выдан.
+
+## Описание облачной инфраструктуры
+
+[Серверная инфраструктура: edu-hopeful-ritchie](https://sirius-env-registry.website.yandexcloud.net/edu-hopeful-ritchie.html)
